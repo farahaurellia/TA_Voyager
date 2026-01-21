@@ -27,12 +27,16 @@ app.post("/start", (req, res) => {
     bot = null;
     console.log(req.body);
     bot = mineflayer.createBot({
-        host: "localhost", // minecraft server ip
+        host: "127.0.0.1", // minecraft server ip
         port: req.body.port, // minecraft server port
         username: "bot",
         disableChatSigning: true,
         checkTimeoutInterval: 60 * 60 * 1000,
     });
+    bot.on("error", (e) => console.log("[BOT ERROR]", e));
+    bot.on("end", () => console.log("[BOT END] disconnected"));
+    bot._client?.on?.("error", (e) => console.log("[CLIENT ERROR]", e));
+
     bot.once("error", onConnectionFailed);
 
     // Event subscriptions
@@ -99,11 +103,13 @@ app.post("/start", (req, res) => {
         const tool = require("mineflayer-tool").plugin;
         const collectBlock = require("mineflayer-collectblock").plugin;
         const pvp = require("mineflayer-pvp").plugin;
-        const minecraftHawkEye = require("minecrafthawkeye");
+        // const minecraftHawkEye = require("minecrafthawkeye");
+        const minecraftHawkEye = require("minecrafthawkeye").default;
         bot.loadPlugin(pathfinder);
         bot.loadPlugin(tool);
         bot.loadPlugin(collectBlock);
         bot.loadPlugin(pvp);
+        // bot.loadPlugin(minecraftHawkEye);
         bot.loadPlugin(minecraftHawkEye);
 
         // bot.collectBlock.movements.digCost = 0;
