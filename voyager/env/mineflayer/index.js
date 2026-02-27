@@ -29,13 +29,39 @@ app.post("/start", (req, res) => {
     bot = mineflayer.createBot({
         host: "127.0.0.1", // minecraft server ip
         port: req.body.port, // minecraft server port
-        username: "bot",
+        username: process.argv[3] || "voyager",
+        version: "1.19.2",
+        auth: "offline",
         disableChatSigning: true,
         checkTimeoutInterval: 60 * 60 * 1000,
     });
-    bot.on("error", (e) => console.log("[BOT ERROR]", e));
-    bot.on("end", () => console.log("[BOT END] disconnected"));
-    bot._client?.on?.("error", (e) => console.log("[CLIENT ERROR]", e));
+    bot.on("connect", () => console.log("[BOT CONNECT] TCP connected"));
+    bot.on("login", () => console.log("[BOT LOGIN] logged in"));
+
+    bot.on("kicked", (reason, loggedIn) => {
+    console.log("[BOT KICKED loggedIn]", loggedIn);
+    try {
+        console.log("[BOT KICKED reason raw]", reason);
+        console.log("[BOT KICKED reason json]", JSON.stringify(reason));
+    } catch (e) {
+        console.log("[BOT KICKED reason stringify failed]", e);
+    }
+    });
+
+    bot.on("error", (err) => {
+    console.log("[BOT ERROR]", err);
+    });
+
+    bot.on("end", (reason) => {
+    console.log("[BOT END] disconnected", reason);
+    });
+
+    if (bot._client) {
+    bot._client.on("error", (e) => console.log("[CLIENT ERROR]", e));
+    bot._client.on("end", (r) => console.log("[CLIENT END]", r));
+    }
+
+
 
     bot.once("error", onConnectionFailed);
 

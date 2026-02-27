@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Explorer_Bot",
+        "server_port": 3002,
+        "ckpt_dir": "ckpt/bot1",
+        "mc_lan_port": 60867
+    },
+    {
+        "name": "Builder_Bot",
+        "server_port": 3001,
+        "ckpt_dir": "ckpt/bot2",
+        "mc_lan_port": 60867
+    }
+]

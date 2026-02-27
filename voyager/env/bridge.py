@@ -24,6 +24,7 @@ class VoyagerEnv(gym.Env):
         server_port=3000,
         request_timeout=600,
         log_path="./logs",
+        mc_username="voyager",
     ):
         if not mc_port and not azure_login:
             raise ValueError("Either mc_port or azure_login must be specified")
@@ -33,6 +34,7 @@ class VoyagerEnv(gym.Env):
             )
         self.mc_port = mc_port
         self.azure_login = azure_login
+        self.mc_username = mc_username
         self.server = f"{server_host}:{server_port}"
         self.server_port = server_port
         self.request_timeout = request_timeout
@@ -55,6 +57,7 @@ class VoyagerEnv(gym.Env):
                 "node",
                 U.f_join(file_path, "mineflayer/index.js"),
                 str(server_port),
+                self.mc_username,
             ],
             name="mineflayer",
             ready_match=r"Server started on port (\d+)",
