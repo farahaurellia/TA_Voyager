@@ -11,7 +11,7 @@ def run_bot(config):
         ckpt_dir=config["ckpt_dir"],      # WAJIB beda agar tidak IO Error
         azure_login=None,                 # Lewati login Microsoft
         resume=False,                      # Mulai dari awal setiap kali
-        openai_api_key="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",
+        openai_api_key="",
         mc_username=config["name"],
     )
     print(f"--- Memulai {config['name']} di Port {config['server_port']} ---")
