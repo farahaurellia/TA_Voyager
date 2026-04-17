@@ -9,12 +9,13 @@ RUN cd voyager/env/mineflayer && npm install
 
 # 2. PAKSA instalasi modul biang kerok langsung di layer Docker
 # Ini memastikan modul-modul ini ada sebelum sisa requirements dijalankan
+# Tambahkan tanda kutip di sekeliling pydantic<2.0
 RUN pip install --no-cache-dir \
-    gymnasium==0.28.1 \
-    minecraft-launcher-lib==8.0 \
-    langchain-community \
-    langchain-openai \
-    pydantic<2.0
+    "gymnasium==0.28.1" \
+    "minecraft-launcher-lib==8.0" \
+    "langchain-community" \
+    "langchain-openai" \
+    "pydantic<2.0"
 
 # Install dependencies Python (Voyager)
 COPY requirements.txt .
