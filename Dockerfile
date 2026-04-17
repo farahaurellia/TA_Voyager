@@ -26,4 +26,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Script untuk menyalakan Bridge lalu Bot secara berurutan
-CMD node voyager/env/mineflayer/index.js $SERVER_PORT $MC_PORT $MC_HOST $BOT_NAME & sleep 10 && python run_voyager.py
+CMD node voyager/env/mineflayer/index.js $SERVER_PORT $MC_PORT $MC_HOST $BOT_NAME & sleep 30 && python run_voyager.py
