@@ -13,6 +13,7 @@ RUN cd voyager/env/mineflayer && npm install
 RUN pip install --no-cache-dir \
     "gymnasium==0.28.1" \
     "minecraft-launcher-lib==8.0" \
+    "psutil" \
     "langchain-community" \
     "langchain-openai" \
     "pydantic<2.0"
