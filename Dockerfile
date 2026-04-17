@@ -7,7 +7,14 @@ WORKDIR /app
 COPY voyager/env/mineflayer/package.json ./voyager/env/mineflayer/
 RUN cd voyager/env/mineflayer && npm install
 
-RUN pip install --no-cache-dir gymnasium==0.28.1 langchain-community langchain-openai
+# 2. PAKSA instalasi modul biang kerok langsung di layer Docker
+# Ini memastikan modul-modul ini ada sebelum sisa requirements dijalankan
+RUN pip install --no-cache-dir \
+    gymnasium==0.28.1 \
+    minecraft-launcher-lib==8.0 \
+    langchain-community \
+    langchain-openai \
+    pydantic<2.0
 
 # Install dependencies Python (Voyager)
 COPY requirements.txt .
