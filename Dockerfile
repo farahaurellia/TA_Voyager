@@ -7,6 +7,8 @@ WORKDIR /app
 COPY voyager/env/mineflayer/package.json ./voyager/env/mineflayer/
 RUN cd voyager/env/mineflayer && npm install
 
+RUN pip install --no-cache-dir gymnasium==0.28.1 langchain-community langchain-openai
+
 # Install dependencies Python (Voyager)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
