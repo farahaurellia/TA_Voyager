@@ -1,15 +1,28 @@
 import os
 import sys
+from time import time
+import requests
 
-# PAKSA ambil dari environment OS dan cetak untuk bukti
-RAW_KEY = os.environ.get("OPENAI_API_KEY")
-if RAW_KEY:
-    print(f"--- DEBUG TA: Python dapet key (10 digit): {RAW_KEY[:10]} ---")
-    # Suntik ulang secara paksa ke environment sistem
-    os.environ["OPENAI_API_KEY"] = RAW_KEY
-else:
-    print("--- DEBUG TA: Python BENERAN KOSONG gak dapet key ---")
-    sys.exit(1) # Matikan biar gak error muter-muter
+# ... (kode debug key kamu)
+
+# Logika menunggu Bridge (Node.js) siap
+bridge_ready = False
+bridge_url = f"http://127.0.0.1:5000" # Sesuaikan variabel port-mu
+
+print(f"--- Menunggu Bridge di {bridge_url} siap... ---")
+for i in range(12): # Coba selama 60 detik (12 x 5 detik)
+    try:
+        # Voyager biasanya punya endpoint check atau kita coba hit portnya
+        requests.get(bridge_url) 
+        bridge_ready = True
+        break
+    except requests.exceptions.ConnectionError:
+        print(f"--- Bridge belum siap, mencoba lagi dalam 5 detik... ({i+1}/12) ---")
+        time.sleep(5)
+
+if not bridge_ready:
+    print("--- ERROR: Bridge gagal start setelah 60 detik. Mematikan bot. ---")
+    sys.exit(1)
 
 from voyager import Voyager
 
