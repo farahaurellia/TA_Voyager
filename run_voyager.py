@@ -4,7 +4,7 @@ from time import time
 import requests
 
 # ... (kode debug key kamu)
-
+RAW_KEY = os.environ.get("OPENAI_API_KEY")
 # Logika menunggu Bridge (Node.js) siap
 bridge_ready = False
 bridge_url = f"http://127.0.0.1:5000" # Sesuaikan variabel port-mu
