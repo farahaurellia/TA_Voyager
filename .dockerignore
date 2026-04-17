@@ -5,3 +5,4 @@ __pycache__
 .git
 ckpt
 *.log
+.env
