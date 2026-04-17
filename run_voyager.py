@@ -1,20 +1,15 @@
 import os
-from dotenv import load_dotenv
+import sys
 
-# 1. Coba load dari .env (jika ada)
-load_dotenv()
-
-# 2. Ambil dari environment system (yang dikirim Coolify)
-api_key = os.getenv("OPENAI_API_KEY")
-
-# 3. DEBUG: Print untuk memastikan (Opsional, hapus jika sudah jalan)
-if api_key:
-    print(f"Python berhasil baca Key: {api_key[:10]}...")
+# PAKSA ambil dari environment OS dan cetak untuk bukti
+RAW_KEY = os.environ.get("OPENAI_API_KEY")
+if RAW_KEY:
+    print(f"--- DEBUG TA: Python dapet key (10 digit): {RAW_KEY[:10]} ---")
+    # Suntik ulang secara paksa ke environment sistem
+    os.environ["OPENAI_API_KEY"] = RAW_KEY
 else:
-    print("Python GAGAL baca Key dari os.getenv")
-
-# 4. PAKSA masukkan ke environment agar dibaca LangChain/Pydantic
-os.environ["OPENAI_API_KEY"] = api_key
+    print("--- DEBUG TA: Python BENERAN KOSONG gak dapet key ---")
+    sys.exit(1) # Matikan biar gak error muter-muter
 
 from voyager import Voyager
 
