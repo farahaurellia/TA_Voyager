@@ -1,6 +1,6 @@
 import os
 import sys
-from time import time
+import time
 import requests
 
 RAW_KEY = os.environ.get("OPENAI_API_KEY")
