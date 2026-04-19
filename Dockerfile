@@ -24,7 +24,7 @@ RUN printf '%s\n' \
 '' \
 '' \
 'node /app/voyager/env/mineflayer/index.js "$SERVER_PORT" "$MC_PORT" "$MC_HOST" "$BOT_NAME" & sleep 5'
-'python /app/run_voyager.py'
+'py /app/run_voyager.py'
 '' \
 > /app/start.sh && chmod +x /app/start.sh
 
