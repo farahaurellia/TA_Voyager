@@ -23,8 +23,7 @@ RUN printf '%s\n' \
 'export BRIDGE_URL="http://127.0.0.1:${SERVER_PORT}"' \
 '' \
 '' \
-'node /app/voyager/env/mineflayer/index.js "$SERVER_PORT" "$MC_PORT" "$MC_HOST" "$BOT_NAME" &
-sleep 5'
+'node /app/voyager/env/mineflayer/index.js "$SERVER_PORT" "$MC_PORT" "$MC_HOST" "$BOT_NAME" & sleep 5'
 'python /app/run_voyager.py'
 '' \
 > /app/start.sh && chmod +x /app/start.sh
