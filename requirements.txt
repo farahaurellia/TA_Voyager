@@ -19,6 +19,7 @@ fpdf
 pathlib
 PyYAML
 requests
+psutil
 
 # --- Database & Server ---
 uvicorn
