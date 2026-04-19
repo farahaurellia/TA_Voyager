@@ -67,41 +67,40 @@ app.post("/start", (req, res) => {
         bot.removeListener("error", onConnectionFailed);
         let itemTicks = 1;
         if (req.body.reset === "hard") {
-            console.log("[RESET] hard requested, treating as soft for stability test");
-            // bot.chat("/clear @s");
-            //  bot.chat("/kill @s");
-            // const inventory = req.body.inventory ? req.body.inventory : {};
-            // const equipment = req.body.equipment
-            //     ? req.body.equipment
-            //     : [null, null, null, null, null, null];
-            // for (let key in inventory) {
-            //     bot.chat(`/give @s minecraft:${key} ${inventory[key]}`);
-            //     itemTicks += 1;
-            // }
-            // const equipmentNames = [
-            //     "armor.head",
-            //     "armor.chest",
-            //     "armor.legs",
-            //     "armor.feet",
-            //     "weapon.mainhand",
-            //     "weapon.offhand",
-            // ];
-            // for (let i = 0; i < 6; i++) {
-            //     if (i === 4) continue;
-            //     if (equipment[i]) {
-            //         bot.chat(
-            //             `/item replace entity @s ${equipmentNames[i]} with minecraft:${equipment[i]}`
-            //         );
-            //         itemTicks += 1;
-            //     }
-            // }
+            bot.chat("/clear @s");
+             bot.chat("/kill @s");
+            const inventory = req.body.inventory ? req.body.inventory : {};
+            const equipment = req.body.equipment
+                ? req.body.equipment
+                : [null, null, null, null, null, null];
+            for (let key in inventory) {
+                bot.chat(`/give @s minecraft:${key} ${inventory[key]}`);
+                itemTicks += 1;
+            }
+            const equipmentNames = [
+                "armor.head",
+                "armor.chest",
+                "armor.legs",
+                "armor.feet",
+                "weapon.mainhand",
+                "weapon.offhand",
+            ];
+            for (let i = 0; i < 6; i++) {
+                if (i === 4) continue;
+                if (equipment[i]) {
+                    bot.chat(
+                        `/item replace entity @s ${equipmentNames[i]} with minecraft:${equipment[i]}`
+                    );
+                    itemTicks += 1;
+                }
+            }
         }
 
-        // if (req.body.position) {
-        //     bot.chat(
-        //         `/tp @s ${req.body.position.x} ${req.body.position.y} ${req.body.position.z}`
-        //     );
-        // }
+        if (req.body.position) {
+            bot.chat(
+                `/tp @s ${req.body.position.x} ${req.body.position.y} ${req.body.position.z}`
+            );
+        }
 
         // if iron_pickaxe is in bot's inventory
         if (
@@ -123,8 +122,8 @@ app.post("/start", (req, res) => {
         // bot.loadPlugin(minecraftHawkEye);
         bot.loadPlugin(minecraftHawkEye);
 
-        // bot.collectBlock.movements.digCost = 0;
-        // bot.collectBlock.movements.placeCost = 0;
+        bot.collectBlock.movements.digCost = 0;
+        bot.collectBlock.movements.placeCost = 0;
 
         obs.inject(bot, [
             OnChat,
@@ -138,10 +137,10 @@ app.post("/start", (req, res) => {
         ]);
         skills.inject(bot);
 
-        // if (req.body.spread) {
-        //     bot.chat(`/spreadplayers ~ ~ 0 300 under 80 false @s`);
-        //     await bot.waitForTicks(bot.waitTicks);
-        // }
+        if (req.body.spread) {
+            bot.chat(`/spreadplayers ~ ~ 0 300 under 80 false @s`);
+            await bot.waitForTicks(bot.waitTicks);
+        }
 
         await bot.waitForTicks(bot.waitTicks * itemTicks);
         res.json(bot.observe());
@@ -277,42 +276,42 @@ app.post("/step", async (req, res) => {
         }
     }
 
-    // function onStuck(posThreshold) {
-    //     const currentPos = bot.entity.position;
-    //     bot.stuckPosList.push(currentPos);
+    function onStuck(posThreshold) {
+        const currentPos = bot.entity.position;
+        bot.stuckPosList.push(currentPos);
 
-    //     // Check if the list is full
-    //     if (bot.stuckPosList.length === 5) {
-    //         const oldestPos = bot.stuckPosList[0];
-    //         const posDifference = currentPos.distanceTo(oldestPos);
+        // Check if the list is full
+        if (bot.stuckPosList.length === 5) {
+            const oldestPos = bot.stuckPosList[0];
+            const posDifference = currentPos.distanceTo(oldestPos);
 
-    //         if (posDifference < posThreshold) {
-    //             teleportBot(); // execute the function
-    //         }
+            if (posDifference < posThreshold) {
+                teleportBot(); // execute the function
+            }
 
-    //         // Remove the oldest time from the list
-    //         bot.stuckPosList.shift();
-    //     }
-    // }
+            // Remove the oldest time from the list
+            bot.stuckPosList.shift();
+        }
+    }
 
-    // function teleportBot() {
-    //     const blocks = bot.findBlocks({
-    //         matching: (block) => {
-    //             return block.type === 0;
-    //         },
-    //         maxDistance: 1,
-    //         count: 27,
-    //     });
+    function teleportBot() {
+        const blocks = bot.findBlocks({
+            matching: (block) => {
+                return block.type === 0;
+            },
+            maxDistance: 1,
+            count: 27,
+        });
 
-    //     if (blocks) {
-    //         // console.log(blocks.length);
-    //         const randomIndex = Math.floor(Math.random() * blocks.length);
-    //         const block = blocks[randomIndex];
-    //         bot.chat(`/tp @s ${block.x} ${block.y} ${block.z}`);
-    //     } else {
-    //         bot.chat("/tp @s ~ ~1.25 ~");
-    //     }
-    // }
+        if (blocks) {
+            // console.log(blocks.length);
+            const randomIndex = Math.floor(Math.random() * blocks.length);
+            const block = blocks[randomIndex];
+            bot.chat(`/tp @s ${block.x} ${block.y} ${block.z}`);
+        } else {
+            bot.chat("/tp @s ~ ~1.25 ~");
+        }
+    }
 
     function returnItems() {
         bot.chat("/gamerule doTileDrops false");
