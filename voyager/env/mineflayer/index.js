@@ -67,33 +67,34 @@ app.post("/start", (req, res) => {
         bot.removeListener("error", onConnectionFailed);
         let itemTicks = 1;
         if (req.body.reset === "hard") {
-            bot.chat("/clear @s");
-            // bot.chat("/kill @s");
-            const inventory = req.body.inventory ? req.body.inventory : {};
-            const equipment = req.body.equipment
-                ? req.body.equipment
-                : [null, null, null, null, null, null];
-            for (let key in inventory) {
-                bot.chat(`/give @s minecraft:${key} ${inventory[key]}`);
-                itemTicks += 1;
-            }
-            const equipmentNames = [
-                "armor.head",
-                "armor.chest",
-                "armor.legs",
-                "armor.feet",
-                "weapon.mainhand",
-                "weapon.offhand",
-            ];
-            for (let i = 0; i < 6; i++) {
-                if (i === 4) continue;
-                if (equipment[i]) {
-                    bot.chat(
-                        `/item replace entity @s ${equipmentNames[i]} with minecraft:${equipment[i]}`
-                    );
-                    itemTicks += 1;
-                }
-            }
+            console.log("[RESET] hard requested, treating as soft for stability test");
+            // bot.chat("/clear @s");
+            //  bot.chat("/kill @s");
+            // const inventory = req.body.inventory ? req.body.inventory : {};
+            // const equipment = req.body.equipment
+            //     ? req.body.equipment
+            //     : [null, null, null, null, null, null];
+            // for (let key in inventory) {
+            //     bot.chat(`/give @s minecraft:${key} ${inventory[key]}`);
+            //     itemTicks += 1;
+            // }
+            // const equipmentNames = [
+            //     "armor.head",
+            //     "armor.chest",
+            //     "armor.legs",
+            //     "armor.feet",
+            //     "weapon.mainhand",
+            //     "weapon.offhand",
+            // ];
+            // for (let i = 0; i < 6; i++) {
+            //     if (i === 4) continue;
+            //     if (equipment[i]) {
+            //         bot.chat(
+            //             `/item replace entity @s ${equipmentNames[i]} with minecraft:${equipment[i]}`
+            //         );
+            //         itemTicks += 1;
+            //     }
+            // }
         }
 
         // if (req.body.position) {
