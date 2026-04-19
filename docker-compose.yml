@@ -1,0 +1,13 @@
+services:
+  voyager-bot-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: voyager-bot-1
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      SERVER_PORT: 3000
+      MC_PORT: 25565
+      MC_HOST: 100.72.205.104
+      BOT_NAME: bot_1
+    restart: unless-stopped

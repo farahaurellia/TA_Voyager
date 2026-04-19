@@ -19,17 +19,26 @@ let bot = null;
 
 const app = express();
 
+const DEFAULT_PORT = 3000;
+const PORT = process.env.SERVER_PORT || process.argv[2] || DEFAULT_PORT;
+const MC_HOST = process.env.MC_HOST || process.argv[4] || "127.0.0.1";
+const BOT_NAME = process.env.BOT_NAME || process.argv[5] || "bot";
+
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: false }));
+
+app.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok", bot_spawned: !!bot });
+});
 
 app.post("/start", (req, res) => {
     if (bot) onDisconnect("Restarting bot");
     bot = null;
     console.log(req.body);
     bot = mineflayer.createBot({
-        host: process.argv[4] || "100.72.205.104", // minecraft server ip
+        host: MC_HOST,
         port: req.body.port, // minecraft server port
-        username: "bot",
+        username: BOT_NAME,
         disableChatSigning: true,
         checkTimeoutInterval: 60 * 60 * 1000,
     });
@@ -424,8 +433,7 @@ app.post("/pause", (req, res) => {
 
 // Server listening to PORT 3000
 
-const DEFAULT_PORT = 3000;
-const PORT = process.argv[2] || DEFAULT_PORT;
+
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
