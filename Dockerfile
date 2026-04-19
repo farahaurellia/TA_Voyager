@@ -22,12 +22,9 @@ RUN printf '%s\n' \
 'export BOT_NAME="${BOT_NAME:-bot}"' \
 'export BRIDGE_URL="http://127.0.0.1:${SERVER_PORT}"' \
 '' \
-'node /app/voyager/env/mineflayer/index.js "$SERVER_PORT" "$MC_PORT" "$MC_HOST" "$BOT_NAME" &' \
-'NODE_PID=$!' \
 '' \
 'python /app/run_voyager.py' \
 '' \
-'wait $NODE_PID' \
 > /app/start.sh && chmod +x /app/start.sh
 
 CMD ["/app/start.sh"]
