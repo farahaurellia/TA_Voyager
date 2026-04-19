@@ -9,6 +9,7 @@ fastapi==0.85.1
 pydantic<2.0,>=1.10.0
 javascript==1!1.2.6
 gymnasium==0.28.1
+minecraft-launcher-lib==8.0
 
 # --- Utils & Support ---
 python-dotenv
