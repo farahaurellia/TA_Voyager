@@ -239,7 +239,7 @@ class CurriculumAgent:
         return HumanMessage(content=content)
 
     def propose_next_task(self, *, events, chest_observation, max_retries=5):
-        if self.progress == 0:
+        if self.progress == 0 and self.mode == "auto":
             return self.propose_next_persona_task()
 
         # hard code task when inventory is almost full
