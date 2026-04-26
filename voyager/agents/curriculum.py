@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import random
 import re
+import os
 
 import voyager.utils as U
 from voyager.prompts import load_prompt
@@ -238,10 +239,8 @@ class CurriculumAgent:
         return HumanMessage(content=content)
 
     def propose_next_task(self, *, events, chest_observation, max_retries=5):
-        if self.progress == 0 and self.mode == "auto":
-            task = "Mine 1 wood log"
-            context = "You can mine one of oak, birch, spruce, jungle, acacia, dark oak, or mangrove logs."
-            return task, context
+        if self.progress == 0:
+            return self.propose_next_persona_task()
 
         # hard code task when inventory is almost full
         inventoryUsed = events[-1][1]["status"]["inventoryUsed"]
@@ -325,6 +324,34 @@ class CurriculumAgent:
             print(f"Task: {task}\nContext: {context}")
             confirmed = input("Confirm? (y/n)").lower() in ["y", ""]
         return task, context
+
+    def propose_next_persona_task(self):
+        persona = os.getenv("BOT_PERSONA", "balanced").lower()
+
+        persona_tasks = {
+            "explorer": (
+                "Explore the nearby area",
+                "Move around frequently, observe different terrain, visit new locations, and interact lightly with the environment. Do not prioritize mining wood unless it is necessary for survival."
+            ),
+            "gatherer": (
+                "Gather nearby natural resources",
+                "Collect useful resources such as stone, dirt, seeds, or food from nearby areas. Focus on resource collection rather than exploration."
+            ),
+            "builder": (
+                "Build a small simple structure",
+                "Place blocks to create a small shelter or structure near the spawn area. Focus on construction-oriented behavior."
+            ),
+            "combat": (
+                "Look for nearby entities and prepare for survival",
+                "Observe nearby mobs or animals, keep moving safely, and react defensively when encountering hostile entities."
+            ),
+            "balanced": (
+                "Explore and interact with the nearby environment",
+                "Perform a balanced combination of movement, observation, light resource gathering, and environmental interaction."
+            ),
+        }
+
+        return persona_tasks.get(persona, persona_tasks["balanced"])
 
     def update_exploration_progress(self, info):
         task = info["task"]
